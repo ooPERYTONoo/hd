@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="en">
+
+    <head>
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta name="description" content="HD Photo Films" />
+        <meta name="keywords" content="Photography,PhotoFrame,Wedding photography,hd photo films,candid,himanshu," />
+        <meta name="author" content="Himanshu Dewangan" />
+        <link rel="shortcut icon" href="img/web_ico.png" type="image/x-icon">
+        <link rel="stylesheet" href="main.css">
+        <link rel="stylesheet" href="head_foot.css">
+
+        <title>HD Photo Films</title>
+    </head>
+
+    <body>
+        <div id="back"></div>
+        <div class="Btn">
+            <a href="#back" class="Btn">
+                <svg height="1.2em" class="arrow" viewBox="0 0 512 512">
+                    <path
+                        d="M233.4 105.4c12.5-12.5 32.8-12.5 45.3 0l192 192c12.5 12.5 12.5 32.8 0 45.3s-32.8 12.5-45.3 0L256 173.3 86.6 342.6c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3l192-192z">
+                    </path>
+                </svg>
+            </a>
+        </div>
+        <header>
+            <div class="heading">
+                <div class="logo"><img src="./img/web_ico.png" alt="img" height="90px"></div>
+                <div class="head">
+                    <h1>HD PHOTO FILMS</h1>
+                </div>
+            </div>
+        </header>
+        <main class="content">
+
+            <div class="slide-i">
+                <div id="img_count1"></div>
+
+
+            </div>
+            <div class="sites">
+                <div class="row1">
+                    <a href="portrait.html" class="link">portrait</a>
+                    <a href="candid.html" class="link">Candid</a>
+                </div>
+                <div class="row1">
+                    <a href="outdoor.html" class="link">outdoor</a>
+                    <a href="highlight.html" class="link">highlight</a>
+                </div>
+            </div>
+
+        </main>
+        <footer>
+            <section class="bottom">
+                <div class="info">
+                    <h4>Himanshu Dewangan</h4>
+                    <address>
+                        Near atmanand school
+                        <br>jamkotpara kondagaon
+                    </address>
+                    <h5>Contact No.:- +91 7477265891</h5>
+                </div>
+                <div class="image">
+                    <img src="./img/web_ico.png" alt="logo">
+                </div>
+            </section>
+            <section class="social">
+                <div class="icon"><a href="https://www.instagram.com/hd_photo_films/" target="_blank">
+                        <img src="./img/logo1.png" alt="Instagram"></a>
+                </div>
+                <div class="icon"><a href="https://wa.me/917477265891" target="_blank">
+                        <img src="./img/logo2.png" alt="Whatsapp"></a></div>
+                <div class="icon"><a href="https://www.facebook.com/profile.php?id=61550833493142" target="_blank">
+                        <img src="./img/logo3.png" alt="Facebook"></a></div>
+                <div class="icon">
+                    <a href=mailto:"hi4777dew@gmail.com" target="_blank">
+                        <img src="./img/logo4.png" alt="Gmail"></a>
+                </div>
+            </section>
+        </footer>
+
+    </body>
+    <script>
+        const image1 = document.querySelector('#pht1')
+        const input1 = document.querySelector('input')
+        input1.addEventListener('change', (e) => {
+            image1.src = URL.createObjectURL(e.target.files[0])
+        })
+        const image2 = document.querySelector('#pht2')
+        const input2 = document.querySelector('input')
+        input1.addEventListener('change', (e) => {
+            image2.src = URL.createObjectURL(e.target.files[0])
+        })
+    </script>
+    <script>
+
+        const folderPath = './img/insta';
+
+        function displayImages(imageNames) {
+            console.log(imageNames.length); // This will contain the array of image names
+
+
+
+            imageNames.forEach(fileName => {
+
+                const img = document.createElement('img');
+
+                img.src = folderPath + "/" + fileName; // Assuming the images are located in the 'img/re' folder relative to your HTML file
+                const container = document.getElementById(`img_count1`); // Assuming you have a container element with id 'image-container'
+                console.log(fileName)
+
+
+                img.alt = fileName;
+                img.setAttribute('class', 'img') // Set alt attribute for accessibility
+                // container.appendChild(img); // Append the image element to the container
+                container.insertAdjacentElement("afterend", img)
+            });
+
+            const slides = document.querySelectorAll(".img");
+            var counter = 0;
+            slides.forEach(
+                (slides, index) => {
+                    slides.style.left = `${index * 100}%`
+                }
+            )
+
+            const slideImage = () => {
+                slides.forEach(
+                    (slide) => {
+                        slide.style.transform = `translateX(-${counter * 100}%)`
+                    }
+                )
+            }
+
+            const goNext = () => {
+                slideImage()
+                counter++
+                if (counter > slides.length - 1) {
+                    counter = 0
+                }
+            }
+            const goPrev = () => {
+                counter--
+                slideImage()
+            }
+
+            const repeat = () => {
+                goNext()
+            }
+            setInterval(repeat, 2000)
+        }
+
+
+        // Usage example:
+        fetchImageNames()
+            .then(names => {
+
+                displayImages(names); // Display the images on the webpage
+
+            });
+
+
+        let fileNames = []; // Declare fileNames array to store image names
+
+        function fetchImageNames() {
+
+            return fetch(folderPath)
+                .then(response => response.text())
+                .then(data => {
+                    // Create a temporary div element to hold the HTML content
+                    const tempDiv = document.createElement('div');
+                    tempDiv.innerHTML = data;
+
+                    // Extract all <a> elements
+                    const aElements = tempDiv.getElementsByTagName('a');
+                    //console.log(aElements)
+
+                    // Loop through <a> elements to extract filenames
+                    for (let i = 0; i < aElements.length; i++) {
+                        const href = aElements[i].getAttribute('href');
+                        // Check if href is a valid image file (you may need to adjust this condition)
+                        if (href && /\.(jpg|jpeg|png|webp)$/i.test(href)) {
+                            // Extract filename from href
+                            const fileName = href.split('/').pop();
+                            // Add filename to the fileNames array
+                            fileNames.push(fileName);
+                        }
+                    }
+
+                    return fileNames;
+                })
+                .catch(error => {
+                    console.error('Error fetching data:', error);
+                    return []; // Return an empty array in case of an error
+                });
+        }
+    </script>
+
+</html>
