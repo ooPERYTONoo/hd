@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+
+    <head>
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta name="description" content="HD Photo Films" />
+        <meta name="keywords" content="Photography,PhotoFrame,Wedding photography,hd photo films,candid,himanshu," />
+        <meta name="author" content="Himanshu Dewangan" />
+        <link rel="shortcut icon" href="img/web_ico.png" type="image/x-icon">
+        <link rel="stylesheet" href="main.css">
+        <link rel="stylesheet" href="head_foot.css">
+
+        <title>HD Photo Films</title>
+    </head>
+
+    <body>
+        <div id="back"></div>
+        <div class="Btn">
+            <a href="#back" class="Btn">
+                <svg height="1.2em" class="arrow" viewBox="0 0 512 512">
+                    <path
+                        d="M233.4 105.4c12.5-12.5 32.8-12.5 45.3 0l192 192c12.5 12.5 12.5 32.8 0 45.3s-32.8 12.5-45.3 0L256 173.3 86.6 342.6c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3l192-192z">
+                    </path>
+                </svg>
+            </a>
+        </div>
+        <header>
+            <div class="heading">
+                <div class="logo"><img src="./img/web_ico.png" alt="img" height="90px"></div>
+                <div class="head">
+                    <h1>HD PHOTO FILMS</h1>
+                </div>
+            </div>
+        </header>
+        <main class="content">
+
+            <div class="slide-i">
+                <div id="img_count1"></div>
+
+
+            </div>
+            <div class="sites">
+                <div class="row1">
+                    <a href="portrait.html" class="link">portrait</a>
+                    <a href="candid.html" class="link">Candid</a>
+                </div>
+                <div class="row1">
+                    <a href="outdoor.html" class="link">outdoor</a>
+                    <a href="highlight.html" class="link">highlight</a>
+                </div>
+            </div>
+
+        </main>
+        <footer>
+            <section class="bottom">
+                <div class="info">
+                    <h4>Himanshu Dewangan</h4>
+                    <address>
+                        Near atmanand school
+                        <br>jamkotpara kondagaon
+                    </address>
+                    <h5>Contact No.:- +91 7477265891</h5>
+                </div>
+                <div class="image">
+                    <img src="./img/web_ico.png" alt="logo">
+                </div>
+            </section>
+            <section class="social">
+                <div class="icon"><a href="https://www.instagram.com/hd_photo_films/" target="_blank">
+                        <img src="./img/logo1.png" alt="Instagram"></a>
+                </div>
+                <div class="icon"><a href="https://wa.me/917477265891" target="_blank">
+                        <img src="./img/logo2.png" alt="Whatsapp"></a></div>
+                <div class="icon"><a href="https://www.facebook.com/profile.php?id=61550833493142" target="_blank">
+                        <img src="./img/logo3.png" alt="Facebook"></a></div>
+                <div class="icon">
+                    <a href=mailto:"hi4777dew@gmail.com" target="_blank">
+                        <img src="./img/logo4.png" alt="Gmail"></a>
+                </div>
+            </section>
+        </footer>
+
+    </body>
+    <script>
+        const image1 = document.querySelector('#pht1')
+        const input1 = document.querySelector('input')
+        input1.addEventListener('change', (e) => {
+            image1.src = URL.createObjectURL(e.target.files[0])
+        })
+        const image2 = document.querySelector('#pht2')
+        const input2 = document.querySelector('input')
+        input1.addEventListener('change', (e) => {
+            image2.src = URL.createObjectURL(e.target.files[0])
+        })
+    </script>
+    <script>
+        let fileCount; // Declare fileCount as a global variable
+        let filePath = './img/insta'
+
+        function fetchFileCount() {
+            const folderPath = filePath;
+
+            return fetch(folderPath)
+                .then(response => response.text())
+                .then(data => {
+                    fileCount = (data.match(/<a/g) || []).length - 4;
+                    return fileCount;
+                })
+                .catch(error => {
+                    console.error('Error fetching data:', error);
+                    return -1; // Return a default value in case of an error
+                });
+        }
+
+        // Call the fetchFileCount function immediately when the page loads
+        fetchFileCount()
+            .then(count => {
+                if (count !== -1) {
+                    var imgs = count
+                    var counter = 1
+                    var img_c = 1
+                    var imgs = imgs + 1
+                    for (let i = 1; i <= 3; i++) {
+                        do {
+                            const target = document.getElementById(`img_count1`)
+                            var Image = document.createElement("img");
+                            var path = `./img/insta/img${counter}.webp`
+                            Image.src = path;
+                            Image.setAttribute('class', 'img')
+                            target.insertAdjacentElement("beforeend", Image)
+
+
+                            counter++
+                            console.log(imgs)
+                            if (img_c == 3) {
+                                img_c = 0
+                            }
+                            img_c++
+                        } while (counter != imgs)
+
+                        if (counter == imgs) { break }
+                    }
+                    const slides = document.querySelectorAll(".img");
+                    var counter = 0;
+                    slides.forEach(
+                        (slides, index) => {
+                            slides.style.left = `${index * 100}%`
+                        }
+                    )
+
+                    const slideImage = () => {
+                        slides.forEach(
+                            (slide) => {
+                                slide.style.transform = `translateX(-${counter * 100}%)`
+                            }
+                        )
+                    }
+
+                    const goNext = () => {
+                        slideImage()
+                        counter++
+                        if (counter > slides.length - 1) {
+                            counter = 0
+                        }
+                    }
+                    const goPrev = () => {
+                        counter--
+                        slideImage()
+                    }
+
+                    const repeat = () => {
+                        goNext()
+                    }
+                    setInterval(repeat, 2000)
+
+                } else {
+                    console.error('Error fetching data.');
+                }
+            });
+    </script>
+
+</html>
